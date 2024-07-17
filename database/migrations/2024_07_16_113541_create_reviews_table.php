@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('message');
+            $table->text('review');
+            $table->unsignedTinyInteger('rating');
             $table->foreignIdFor(Book::class);
             $table->foreignIdFor(User::class);
             $table->timestamps();
