@@ -17,9 +17,12 @@ return new class extends Migration
             $table->id();
             $table->text('review');
             $table->unsignedTinyInteger('rating');
-            $table->foreignIdFor(Book::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Book::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+//            foreign key
+//            $table->unsignedBigInteger('book_id');
+//            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

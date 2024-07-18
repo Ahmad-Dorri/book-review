@@ -19,7 +19,9 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->word,
-            'author_id' => Author::factory()
+            'author_id' => Author::factory(),
+            'created_at' => $this->faker->dateTimeBetween('-2 years'),
+            'updated_at' => $this->faker->dateTimeBetween('created_at', 'now'),
         ];
     }
 }
