@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 
 class Book extends Model
 {
@@ -14,11 +16,15 @@ class Book extends Model
 
     protected $fillable = ['title'];
 
-    public function scopePopular(Builder $query): Builder
+    public function scopePopular(Builder $query, ?string $start = null, ?string $end = null): Builder
     {
+        $currentDate = (new \DateTime())->format('Y-m-d H:i:s');
+        $startDate = (new \DateTime())->setTimestamp(0)->format('Y-m-d H:i:s');
+
         return $query
             ->withCount('reviews')
-            ->orderBy('reviews_count', 'desc');
+            ->orderBy('reviews_count', 'desc')
+            ->whereBetween('created_at', [$start ?? $startDate, $end ?? $currentDate]);
     }
 
     public function scopeHighestRated(Builder $query): Builder

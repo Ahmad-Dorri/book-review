@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -20,9 +22,9 @@ return new class extends Migration
             $table->foreignIdFor(Book::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
-//            foreign key
-//            $table->unsignedBigInteger('book_id');
-//            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            //            foreign key
+            //            $table->unsignedBigInteger('book_id');
+            //            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

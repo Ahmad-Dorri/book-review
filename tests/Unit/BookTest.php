@@ -7,7 +7,6 @@ namespace Tests\Unit;
 use App\Models\Book;
 use Tests\TestCase;
 
-
 class BookTest extends TestCase
 {
     /** @test */
@@ -24,5 +23,4 @@ class BookTest extends TestCase
         $book->update(['title' => 'Ahmad']);
         $this->assertTrue($book->title === 'Ahmad');
     }
-
 }
