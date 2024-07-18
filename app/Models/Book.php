@@ -16,22 +16,23 @@ class Book extends Model
 
     protected $fillable = ['title'];
 
-    public function scopePopular(Builder $query, ?string $start = null, ?string $end = null): Builder
+    public function scopePopular(Builder $query, ?string $from = null, ?string $to = null): Builder
     {
-        $currentDate = (new \DateTime())->format('Y-m-d H:i:s');
-        $startDate = (new \DateTime())->setTimestamp(0)->format('Y-m-d H:i:s');
-
         return $query
-            ->withCount('reviews')
-            ->orderBy('reviews_count', 'desc')
-            ->whereBetween('created_at', [$start ?? $startDate, $end ?? $currentDate]);
+            ->withCount(['reviews' => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)])
+            ->orderBy('reviews_count', 'desc');
     }
 
-    public function scopeHighestRated(Builder $query): Builder
+    public function scopeHighestRated(Builder $query, ?string $from = null, ?string $to = null): Builder
     {
         return $query
-            ->withAvg('reviews', 'rating')
+            ->withAvg(['reviews' => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)], 'rating')
             ->orderBy('reviews_avg_rating', 'desc');
+    }
+
+    public function scopeMinReviews(Builder $query, int $amount): Builder
+    {
+        return $query->having('reviews_count', '>=', $amount);
     }
 
     public function scopeLastMonth(Builder $query): Builder
@@ -52,5 +53,16 @@ class Book extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    private function dateRangeFilter(Builder $query, ?string $from = null, ?string $to = null): void
+    {
+        if ($from && ! $to) {
+            $query->where('created_at', '>=', $from);
+        } elseif (! $from && $to) {
+            $query->where('created_at', '<=', $to);
+        } elseif ($from && $to) {
+            $query->wherebetween('created_at', [$from, $to]);
+        }
     }
 }
