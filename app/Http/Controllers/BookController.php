@@ -14,7 +14,7 @@ class BookController extends Controller
     {
         $title = $request->input('title');
 
-        $books = Book::query()->when($title, fn($query, $title) => $query->searchByTitle($title))->get();
+        $books = Book::query()->with('author')->highestRated()->popular()->when($title, fn($query, $title) => $query->searchByTitle($title))->simplePaginate(10);
 
         return view('books.index', [
             'books' => $books,

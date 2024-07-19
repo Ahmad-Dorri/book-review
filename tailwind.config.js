@@ -5,8 +5,17 @@ export default {
         './resources/**/*.js',
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: '#050505',
+                secondary: '#ddd'
+            }
+        },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/aspect-ratio'),
+    ],
 };
 
