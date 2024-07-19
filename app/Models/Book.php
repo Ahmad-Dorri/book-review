@@ -16,6 +16,11 @@ class Book extends Model
 
     protected $fillable = ['title'];
 
+    public function scopeSearchByTitle(Builder $query, string $title): Builder
+    {
+        return $query->where('title', 'LIKE', '%' . $title . '%');
+    }
+
     public function scopePopular(Builder $query, ?string $from = null, ?string $to = null): Builder
     {
         return $query

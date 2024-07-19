@@ -10,9 +10,15 @@ use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
-        return 'hello';
+        $title = $request->input('title');
+
+        $books = Book::query()->when($title, fn($query, $title) => $query->searchByTitle($title))->get();
+
+        return view('books.index', [
+            'books' => $books,
+        ]);
     }
 
     public function show(string $id)
