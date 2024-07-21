@@ -2,7 +2,8 @@
     <h1 class="mb-10 text-2xl">
         Books
     </h1>
-    <form class="flex gap-2 mb-4 items-center" method="get" action="{{ route('books.index') }}" >
+    <form class="flex gap-2ls
+     mb-4 items-center" method="get" action="{{ route('books.index') }}" >
         <input name="title" class="input h-10" type="text" placeholder="Search Your Book from here..." value="{{ request('title') }}" />
         <button class="btn h-10" type="submit" >
             search
