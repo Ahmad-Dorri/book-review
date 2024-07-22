@@ -23,4 +23,10 @@ class Review extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected static function booted(): void
+    {
+        static::updated(fn(Review $review) => cache()->forget('book:' . $review->book_id));
+        static::deleted(fn(Review $review) => cache()->forget('book:' . $review->book_id));
+    }
 }

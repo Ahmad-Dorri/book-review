@@ -35,7 +35,9 @@ class BookController extends Controller
 
     public function show(string $id): View
     {
-        $book = Book::query()->popular()->highestRated()->with('reviews', fn($query) => $query->latest())->findOrFail($id);
+        $book = Book::query()->popular()->highestRated()->with('reviews', fn($query) => $query->latest());
+        $cacheKey = 'book:' . $id;
+        $book = cache()->remember($cacheKey, 3600, fn() => $book->findOrFail($id));
 
         return view('books.show', [
             'book' => $book,

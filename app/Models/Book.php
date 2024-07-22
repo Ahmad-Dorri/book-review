@@ -93,4 +93,10 @@ class Book extends Model
             $query->wherebetween('created_at', [$from, $to]);
         }
     }
+
+    protected static function booted(): void
+    {
+        static::updated(fn(Book $book) => cache()->forget("book:" . $book->id));
+        static::deleted(fn(Book $book) => cache()->forget("book:" . $book->id));
+    }
 }
