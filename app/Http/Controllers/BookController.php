@@ -33,9 +33,13 @@ class BookController extends Controller
         ]);
     }
 
-    public function show(string $id)
+    public function show(string $id): View
     {
-        return 'single book';
+        $book = Book::query()->popular()->highestRated()->with('reviews', fn($query) => $query->latest())->findOrFail($id);
+
+        return view('books.show', [
+            'book' => $book,
+        ]);
     }
 
     public function create()
