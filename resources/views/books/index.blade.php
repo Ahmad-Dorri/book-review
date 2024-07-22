@@ -61,5 +61,4 @@
             </li>
         @endforelse
     </ul>
-    {{ $books->links() }}
 </x-layout>

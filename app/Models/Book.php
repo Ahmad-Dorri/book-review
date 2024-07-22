@@ -49,7 +49,7 @@ class Book extends Model
     }
 
 
-    public function scopePopularLastSixMonth(Builder $query): Builder
+    public function scopePopularLastSixMonths(Builder $query): Builder
     {
         return $query
             ->popular(now()->subMonths(6), now())
@@ -65,7 +65,7 @@ class Book extends Model
             ->minReviews(2);
     }
 
-    public function scopeHighestRatedLastSixMonth(Builder $query): Builder
+    public function scopeHighestRatedLastSixMonths(Builder $query): Builder
     {
         return $query
             ->highestRated(now()->subMonths(6), now())
