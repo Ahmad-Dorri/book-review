@@ -26,8 +26,8 @@ class BookController extends Controller
             default => $books->popular()->highestRated()
         };
 
-        $books = $books->simplePaginate(10);
-
+        $cacheKey = 'books:' . $filterValue . ':' . $title;
+        $books = cache()->remember($cacheKey, 3600, fn() => $books->get());
         return view('books.index', [
             'books' => $books,
         ]);
