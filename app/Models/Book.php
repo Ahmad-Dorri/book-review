@@ -40,14 +40,37 @@ class Book extends Model
         return $query->having('reviews_count', '>=', $amount);
     }
 
-    public function scopeLastMonth(Builder $query): Builder
+    public function scopePopularLastMonth(Builder $query): Builder
     {
-        return $query->whereYear('created_at', date('Y'))->whereMonth('created_at', date('m'));
+        return $query
+            ->popular(now()->subMonth(), now())
+            ->highestRated(now()->subMonth(), now())
+            ->minReviews(2);
     }
 
-    public function scopeLastYear(Builder $query): Builder
+
+    public function scopePopularLastSixMonth(Builder $query): Builder
     {
-        return $query->whereYear('created_at', date('Y'));
+        return $query
+            ->popular(now()->subMonths(6), now())
+            ->highestRated(now()->subMonths(6), now())
+            ->minReviews(5);
+    }
+
+    public function scopeHighestRatedLastMonth(Builder $query): Builder
+    {
+        return $query
+            ->highestRated(now()->subMonth(), now())
+            ->popular(now()->subMonth(), now())
+            ->minReviews(2);
+    }
+
+    public function scopeHighestRatedLastSixMonth(Builder $query): Builder
+    {
+        return $query
+            ->highestRated(now()->subMonths(6), now())
+            ->popular(now()->subMonths(6), now())
+            ->minReviews(5);
     }
 
     public function author(): BelongsTo
