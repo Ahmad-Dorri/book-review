@@ -12,7 +12,7 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['review', 'rating'];
+    protected $fillable = ['review', 'rating', 'user_id'];
 
     public function book(): BelongsTo
     {
@@ -26,6 +26,7 @@ class Review extends Model
 
     protected static function booted(): void
     {
+        static::created(fn(Review $review) => cache()->forget('book:' . $review->book_id));
         static::updated(fn(Review $review) => cache()->forget('book:' . $review->book_id));
         static::deleted(fn(Review $review) => cache()->forget('book:' . $review->book_id));
     }
